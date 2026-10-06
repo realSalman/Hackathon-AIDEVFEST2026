@@ -1,42 +1,32 @@
-# Tender Document Package Builder - AI DevFest 2026
+# Tender Document Packager
 
-## 1. Background
+## Overview
 When organizations invite companies to compete for a tender, bidders must submit a specific set of required documents such as trade licenses, TIN and VAT certificates, bank solvency letters, experience certificates, and technical/financial proposals. Preparing this package manually is prone to errors like missing, expired, duplicated, or misplaced documents, which can lead to bid rejection.
 
-This web application helps office staff seamlessly turn a set of PDF files into a complete, correctly ordered, and verified PDF package ready for submission.
+This web application helps users seamlessly turn a set of PDF files into a complete, correctly ordered, and verified PDF package ready for submission.
 
-## 2. Features
+## Features
 
-### Core Functionality (Main Tasks)
-- **Requirements Loading:** Load tender requirements via `requirements.json` and display the required documents in order.
-- **File Uploading:** Support for bulk uploading PDF files, automatically detecting page counts and rejecting non-PDF files.
-- **Document Matching:** Easily match each uploaded file to a required document. Ensures one file per requirement and vice-versa.
-- **Expiry Date Management:** For documents requiring validity checks (`has_expiry: true`), easily enter expiry dates.
-- **Real-Time Validation:** Instantly updates document statuses to indicate if it's Missing, Expiry date needed, Expired, Not provided, or OK based on the tender's `submission_deadline`.
+- **Requirements Loading:** Load tender requirements via a `requirements.json` file.
+- **Bulk PDF Upload:** Support for bulk uploading PDF files with automatic validation.
+- **Document Matching:** Match uploaded files to required documents. Supports auto-matching based on filenames and AI-assisted matching.
+- **Validation & Expiry:** Real-time validation for missing or expired documents based on the tender's submission deadline.
 - **Duplicate Detection:** Identifies uploaded files with identical content to prevent accidental duplicate assignments.
-- **PDF Generation:** Once all blocking issues are resolved, generate a unified PDF package comprising:
-  - An English Cover Page containing tender details and a list of included documents.
-  - The ordered document pages following the cover.
-  - Custom footers with `<tender_id> | Page X of Y` on every page.
-- **Bilingual Support:** Fully toggleable interface between English and Bangla.
+- **PDF Generation:** Generates a unified PDF package including:
+  - A cover page with tender details and an index.
+  - Ordered document pages.
+  - Custom footers (`<tender_id> | Page X of Y`).
+  - Custom seal/signature placement.
+- **Bilingual Interface:** Toggle between English and Bangla.
+- **Session Persistence:** Save and reopen workspace state.
+- **Export:** Export the document checklist as CSV.
 
-### Bonus Tasks (Planned/Implemented)
-- Index page generated after the cover page, showing the starting page number for each document.
-- Custom Seal/Signature placement capability.
-- Export checklist as Excel/CSV.
-- Session persistence (Save/reopen workspace state).
-- Bangla text support in the generated PDF cover and index pages.
-- Auto-matching of files based on filenames.
-- Graceful handling of corrupted or password-protected PDFs.
-- AI Assistance integration for an enhanced user experience.
-
-## 3. Technology Stack
+## Technology Stack
 - **Frontend Framework:** React + Vite
-- **PDF Manipulation:** `pdf-lib` (for generating the final combined PDF, adding covers, and footers).
-- **PDF Rendering/Analysis:** `pdf.js` / `pdfjs-dist` (for counting pages, detecting text, and verifying files).
-- **Styling:** CSS/TailwindCSS.
+- **PDF Manipulation:** `pdf-lib`
+- **Styling:** Vanilla CSS
 
-## 4. Setup and Installation
+## Setup and Installation
 
 1. Install dependencies:
    ```bash
@@ -53,15 +43,14 @@ This web application helps office staff seamlessly turn a set of PDF files into 
    npm run build
    ```
 
-## 5. Usage Guidelines
+## Usage Guidelines
 
-1. **Load Requirements:** Provide the `requirements.json` file.
-2. **Upload Documents:** Upload your PDF files.
-3. **Match & Validate:** Match uploaded files to their respective requirements. Enter expiry dates where required.
-4. **Generate Package:** Once all requirements show a green "OK" or "Not provided" (for optional docs) status, click the "Generate Package" button.
-5. **Download:** Download your finalized `<tender_id>_Package.pdf`.
+1. **Load Requirements:** Upload the `requirements.json` file.
+2. **Upload Documents:** Upload the required PDF files.
+3. **Match & Validate:** Match uploaded files to their respective requirements. Enter expiry dates where required. Use auto-match or AI-match to speed up the process.
+4. **Generate Package:** Once all requirements are fulfilled, click the "Generate Package" button.
+5. **Download:** Download the finalized `<tender_id>_Package.pdf`.
 
-## 6. Constraints & Rules
-- **Frontend Only:** No files are uploaded to any server. Everything is processed locally in your browser ensuring complete privacy and security.
-- **Max Input:** Supported up to 30 PDF files and 50 MB total file size limit.
-- **Browser Compatibility:** Designed for the latest version of Google Chrome.
+## Constraints
+- **Local Processing:** No files are uploaded to any server. Everything is processed locally in the browser (except for AI-assisted matching which requires an API key for the LLM provider).
+- **Limits:** Supports up to 30 PDF files and 50 MB total file size.
