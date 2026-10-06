@@ -1,5 +1,6 @@
 import { useRef, useCallback } from 'react';
 import { t } from '../i18n/translations';
+import { MAX_FILES, MAX_TOTAL_BYTES } from '../utils/pdfUtils';
 import FileRow from './FileRow';
 
 export default function FilePanel({
@@ -25,6 +26,10 @@ export default function FilePanel({
     }
   }
   const matchedFileIds = new Set(Object.values(matches));
+
+  const totalBytes = files.reduce((s, f) => s + (f.arrayBuffer?.byteLength || 0), 0);
+  const totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
+  const maxMB = (MAX_TOTAL_BYTES / (1024 * 1024)).toFixed(0);
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -62,7 +67,9 @@ export default function FilePanel({
         <h2>{t(lang, 'uploadedFiles')}</h2>
         {files.length > 0 && (
           <div className="panel-header-actions">
-            <span className="panel-count">{files.length}</span>
+            <span className="panel-count">
+              {files.length}/{MAX_FILES} · {totalMB}/{maxMB} MB
+            </span>
             <button
               className="remove-all-btn"
               onClick={onRemoveAllFiles}

@@ -7,15 +7,19 @@ export default function GenerateBar({
   blockingReasons,
   isGenerating,
   packageReady,
+  generateError,
   onGenerate,
   onDownload,
+  onExportChecklist,
 }) {
   if (!tender) return null;
 
   return (
     <footer className="generate-bar" id="generate-bar">
       <div className="generate-bar-left">
-        {hasBlockers ? (
+        {generateError ? (
+          <span className="generate-error">{t(lang, 'generateFailed')}: {generateError}</span>
+        ) : hasBlockers ? (
           <div className="blocking-summary">
             <span className="blocking-label">
               {blockingReasons.length} {t(lang, 'blocking')}:
@@ -34,6 +38,13 @@ export default function GenerateBar({
         )}
       </div>
       <div className="generate-bar-right">
+        <button
+          className="export-btn"
+          onClick={onExportChecklist}
+          id="export-checklist-btn"
+        >
+          {t(lang, 'exportChecklist')}
+        </button>
         {packageReady && !isGenerating && (
           <button
             className="download-btn"
